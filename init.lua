@@ -210,7 +210,7 @@ require('lazy').setup({
         -- Set a style preset. 'dark' is default.
         style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
       }
-      require('onedark').load()
+      -- require('onedark').load()
     end,
   },
 
@@ -273,8 +273,8 @@ require('lazy').setup({
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
-  -- require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.autoformat',
+  require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
@@ -282,7 +282,7 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }, {})
 
 -- [[ Setting options ]]
@@ -325,6 +325,9 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+
+-- [[ Colorscheme selection ]] -- config mia
+vim.cmd.colorscheme "gruvbox"
 
 -- [[ Basic Keymaps ]]
 
@@ -439,7 +442,46 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = {
+      -- Go
+      "go",
+      "gomod",
+      "gowork",
+      "gosum",
+
+      -- Elixir
+      "elixir",
+      "heex",
+      "eex",
+
+      -- Interpretados
+      "ruby",
+      'lua',
+      'python',
+
+      -- Web
+      "css",
+      "vue",
+      "svelte",
+      "astro",
+      'tsx',
+      'javascript',
+      'typescript',
+
+      -- compilados
+      'c',
+      'cpp',
+      'rust',
+
+      -- vim
+      'vimdoc',
+      'vim',
+
+      -- Otros
+      "sql",
+      "dockerfile",
+      'bash',
+    },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -450,7 +492,7 @@ vim.defer_fn(function()
     -- You can specify additional Treesitter modules here: -- For example: -- playground = {--enable = true,-- },
     modules = {},
     highlight = { enable = true },
-    indent = { enable = true },
+    -- indent = { enable = true }, -- YO: this give me issues with indent on ruby files
     incremental_selection = {
       enable = true,
       keymaps = {
@@ -600,6 +642,59 @@ local servers = {
       -- NOTE: toggle below to ignore Lua_LS's noisy `missing-fields` warnings
       -- diagnostics = { disable = { 'missing-fields' } },
     },
+  },
+
+  -- LSP Server Golang
+  gopls = {
+    gofumpt = true,
+    codelenses = {
+      gc_details = false,
+      generate = true,
+      regenerate_cgo = true,
+      run_govulncheck = true,
+      test = true,
+      tidy = true,
+      upgrade_dependency = true,
+      vendor = true,
+    },
+    hints = {
+      assignVariableTypes = true,
+      compositeLiteralFields = true,
+      compositeLiteralTypes = true,
+      constantValues = true,
+      functionTypeParameters = true,
+      parameterNames = true,
+      rangeVariableTypes = true,
+    },
+    analyses = {
+      fieldalignment = true,
+      nilness = true,
+      unusedparams = true,
+      unusedwrite = true,
+      useany = true,
+    },
+    usePlaceholders = true,
+    completeUnimported = true,
+    staticcheck = true,
+    directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+    -- semanticTokens = true, -- this feature change some colors in some colorscheme
+  },
+  -- LSP Server for JS/TS
+  tsserver = {},
+  -- Svelte LSP Server for Svelte
+  svelte = {},
+  -- Emmet LSP Server for HTML Elements genration
+  emmet_ls = {},
+  -- solargraph LSP Server for Ruby
+  solargraph = {
+    --  autoformat = false,
+    --  formatting = false,
+    --  completion = true,
+    --  diagnostic = true,
+    --  folding = true,
+    --  references = true,
+    --  rename = true,
+    --  symbols = true,
   },
 }
 
