@@ -9,5 +9,12 @@ return {
   config = function()
     -- F6 key toggle (Open/Close) NeoTree
     vim.keymap.set('n', "<F6>", ":Neotree toggle<CR>", {})
+
+    require("neo-tree").setup({
+      filesystem = {
+        follow_current_file = { enabled = true },
+        use_libuv_file_watcher = true,
+      },
+    })
   end
 }
